@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nathan — Portfolio</title>
+<meta name="description" content="Portfolio of Nathan — software developer projects and skills.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================================================
+   Design tokens
+   =========================================================== */
+:root {
+  /* Color */
+  --ink: #12151c;          /* primary background */
+  --ink-soft: #1a1f29;      /* panels on dark bg */
+  --ink-line: #2a303c;      /* hairlines on dark bg */
+  --paper: #edeae1;         /* warm light panels (screenshots, cards) */
+  --paper-line: #d8d3c6;
+  --text-hi: #f3f1ea;       /* headings on dark */
+  --text-lo: #a3aab6;       /* body on dark */
+  --text-ink: #23242a;      /* body on paper */
+  --signal: #5b7cfa;        /* accent — WhatsApp/WeChat bridge */
+  --signal-dim: #33396b;
+  --tag: #e8a548;           /* accent — InstaTags */
+  --tag-dim: #4a3b20;
+
+  /* Type */
+  --font-display: "Space Grotesk", "Arial Narrow", sans-serif;
+  --font-body: "Inter", -apple-system, "Segoe UI", sans-serif;
+
+  /* Layout */
+  --maxw: 1120px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --radius: 6px;
+  --nav-h: 68px;
+}
+
+/* ===========================================================
+   Reset
+   =========================================================== */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text-lo);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+ul { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3, h4 { font-family: var(--font-display); color: var(--text-hi); margin: 0; font-weight: 600; }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ===========================================================
+   Single-file routing
+   Each former page is a .page block; only one is shown at a time.
+   =========================================================== */
+[hidden] { display: none !important; }
+.page > section,
+.page > header { scroll-margin-top: calc(var(--nav-h) + 16px); }
+
+/* ===========================================================
+   Nav
+   =========================================================== */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(18, 21, 28, 0.88);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--ink-line);
+}
+.site-nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-h);
+}
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--text-hi);
+  letter-spacing: -0.01em;
+}
+.brand span { color: var(--signal); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.nav-links a {
+  font-size: 0.92rem;
+  color: var(--text-lo);
+  transition: color 0.15s ease;
+}
+.nav-links a:hover { color: var(--text-hi); }
+.nav-links .btn-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius);
+  color: var(--text-hi);
+}
+.nav-links .btn-github:hover { border-color: var(--signal); }
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-hi);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .nav-toggle { display: block; }
+  .nav-links {
+    position: absolute;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    background: var(--ink-soft);
+    border-bottom: 1px solid var(--ink-line);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px var(--gutter) 24px;
+    gap: 16px;
+    display: none;
+  }
+  .nav-links.open { display: flex; }
+}
+
+/* ===========================================================
+   Hero
+   =========================================================== */
+.hero {
+  padding: clamp(56px, 10vw, 120px) 0 clamp(48px, 8vw, 96px);
+  border-bottom: 1px solid var(--ink-line);
+}
+.hero .wrap {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+.eyebrow-role {
+  font-size: 0.95rem;
+  color: var(--signal);
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  max-width: 14ch;
+}
+.hero-lede {
+  margin-top: 20px;
+  max-width: 46ch;
+  font-size: 1.08rem;
+  color: var(--text-lo);
+}
+.hero-actions {
+  margin-top: 32px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.btn-primary {
+  background: var(--signal);
+  color: #0d0f14;
+}
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-outline {
+  border: 1px solid var(--ink-line);
+  color: var(--text-hi);
+}
+.btn-outline:hover { border-color: var(--text-lo); }
+
+.hero-art { display: flex; justify-content: center; }
+.hero-art svg { width: 100%; max-width: 380px; height: auto; }
+
+/* ===========================================================
+   Section shell
+   =========================================================== */
+section { padding: clamp(56px, 9vw, 96px) 0; border-bottom: 1px solid var(--ink-line); }
+section:last-of-type { border-bottom: none; }
+.section-head { margin-bottom: 40px; max-width: 62ch; }
+.section-head h2 {
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  letter-spacing: -0.015em;
+}
+.section-head p { margin-top: 12px; color: var(--text-lo); }
+
+/* ===========================================================
+   About
+   =========================================================== */
+.about-body { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.about-body p { color: var(--text-lo); }
+.about-body p + p { margin-top: 16px; }
+.about-facts { display: flex; flex-direction: column; gap: 18px; }
+.fact { border-left: 2px solid var(--ink-line); padding-left: 16px; }
+.fact dt { font-family: var(--font-display); color: var(--text-hi); font-size: 0.95rem; }
+.fact dd { margin: 4px 0 0; color: var(--text-lo); font-size: 0.92rem; }
+
+@media (max-width: 780px) {
+  .about-body, .hero .wrap { grid-template-columns: 1fr; }
+  .hero-art { order: -1; max-width: 220px; margin: 0 auto; }
+}
+
+/* ===========================================================
+   Skills
+   =========================================================== */
+.skill-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.skill-group { border-top: 1px solid var(--ink-line); padding-top: 18px; }
+.skill-group h3 { font-size: 1rem; margin-bottom: 12px; }
+.skill-group ul { display: flex; flex-direction: column; gap: 8px; }
+.skill-group li {
+  font-size: 0.92rem;
+  color: var(--text-lo);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.skill-group li::before {
+  content: "";
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--ink-line);
+  flex-shrink: 0;
+}
+@media (max-width: 780px) { .skill-groups { grid-template-columns: 1fr; } }
+
+/* ===========================================================
+   Projects — home preview
+   =========================================================== */
+.project-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 5vw, 56px);
+  align-items: center;
+  padding: 36px 0;
+}
+.project-feature + .project-feature { border-top: 1px solid var(--ink-line); }
+.project-feature.reverse .feature-media { order: 2; }
+.feature-media {
+  background: var(--paper);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--paper-line);
+}
+.feature-media img { display: block; width: 100%; }
+.feature-tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+.feature-tag.blue { background: var(--signal-dim); color: #c9d3ff; }
+.feature-tag.gold { background: var(--tag-dim); color: #f4d49b; }
+.project-feature h3 { font-size: 1.5rem; margin-bottom: 12px; }
+.project-feature p { color: var(--text-lo); max-width: 42ch; }
+.feature-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--text-hi);
+  font-size: 0.94rem;
+  border-bottom: 1px solid var(--ink-line);
+  padding-bottom: 2px;
+  transition: border-color 0.15s ease;
+}
+.feature-link:hover { border-color: var(--signal); }
+@media (max-width: 780px) {
+  .project-feature, .project-feature.reverse { grid-template-columns: 1fr; }
+  .project-feature.reverse .feature-media { order: 0; }
+}
+
+/* ===========================================================
+   Footer
+   =========================================================== */
+footer { padding: 40px 0 56px; }
+footer .wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-contact { font-size: 0.92rem; color: var(--text-lo); }
+.footer-contact a { color: var(--text-hi); }
+.footer-social { display: flex; gap: 16px; }
+.footer-note { margin-top: 24px; font-size: 0.8rem; color: #5f6673; }
+
+/* ===========================================================
+   Project detail pages
+   =========================================================== */
+.project-hero { padding: 40px 0 48px; border-bottom: 1px solid var(--ink-line); }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: var(--text-lo);
+  margin-bottom: 28px;
+}
+.back-link:hover { color: var(--text-hi); }
+.project-hero h1 { font-size: clamp(1.9rem, 4vw, 2.7rem); max-width: 16ch; }
+.project-tagline { margin-top: 14px; font-size: 1.05rem; color: var(--text-lo); max-width: 52ch; }
+.project-meta {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+.meta-item dt { font-size: 0.76rem; color: #6b7280; text-transform: lowercase; }
+.meta-item dd { margin: 4px 0 0; color: var(--text-hi); font-size: 0.92rem; }
+
+.detail-block { max-width: 68ch; }
+.detail-block p + p { margin-top: 14px; }
+.detail-block h2 { font-size: 1.3rem; margin-bottom: 16px; }
+
+.feature-list { display: flex; flex-direction: column; gap: 14px; max-width: 68ch; }
+.feature-list li {
+  padding-left: 20px;
+  position: relative;
+  color: var(--text-lo);
+}
+.feature-list li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 9px;
+  width: 6px; height: 6px;
+  background: var(--signal);
+}
+
+.step-list { counter-reset: step; display: flex; flex-direction: column; gap: 18px; max-width: 68ch; }
+.step-list li {
+  counter-increment: step;
+  padding-left: 40px;
+  position: relative;
+  color: var(--text-lo);
+}
+.step-list li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 0;
+  width: 26px; height: 26px;
+  border: 1px solid var(--ink-line);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  color: var(--text-hi);
+}
+
+.shot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.shot {
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.shot img { width: 100%; }
+.shot figcaption {
+  padding: 12px 16px;
+  font-size: 0.84rem;
+  color: var(--text-ink);
+  background: var(--paper);
+  border-top: 1px solid var(--paper-line);
+}
+.shot.wide { grid-column: 1 / -1; }
+@media (max-width: 700px) { .shot-grid { grid-template-columns: 1fr; } }
+
+.stack-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  font-size: 0.85rem;
+  padding: 7px 13px;
+  border: 1px solid var(--ink-line);
+  border-radius: 999px;
+  color: var(--text-hi);
+}
+
+.project-links { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.next-project {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 0;
+}
+.next-project .label { font-size: 0.8rem; color: #6b7280; }
+.next-project .title { font-family: var(--font-display); font-size: 1.15rem; color: var(--text-hi); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ===========================================================
+     Shared nav (was repeated on all three pages)
+     =========================================================== -->
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="#home" class="brand">Nathan<span>.</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <a class="btn-github" href="https://github.com/NP3215" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ===========================================================
+     PAGE: Home  (was index.html)
+     =========================================================== -->
+<div class="page" id="page-home" data-title="Nathan — Portfolio">
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow-role">Computer Science student &amp; developer</p>
+      <h1>I build small tools that make everyday tasks less annoying.</h1>
+      <p class="hero-lede">
+        I'm Nathan, based in Tangerang, Indonesia. I like taking a repetitive,
+        fiddly task and turning it into something that takes one click — lately
+        that's meant a Chrome extension that writes Instagram hashtags for you,
+        and a dashboard that lets a team read WhatsApp and WeChat in one inbox.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#projects">View my projects</a>
+        <a class="btn btn-outline" href="https://github.com/NP3215" target="_blank" rel="noopener">GitHub profile</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <!-- Simple line-art motif: a bridge (two nodes linked) and a tag,
+           standing in for the two projects below. -->
+      <svg viewBox="0 0 320 320" fill="none">
+        <circle cx="90" cy="120" r="34" stroke="#5b7cfa" stroke-width="2"/>
+        <circle cx="230" cy="120" r="34" stroke="#5b7cfa" stroke-width="2"/>
+        <path d="M124 120 C 150 90, 200 90, 196 120" stroke="#5b7cfa" stroke-width="2"/>
+        <text x="90" y="126" fill="#c9d3ff" font-family="Inter" font-size="11" text-anchor="middle">WA</text>
+        <text x="230" y="126" fill="#c9d3ff" font-family="Inter" font-size="11" text-anchor="middle">WC</text>
+        <g transform="translate(96 190) rotate(-8)">
+          <path d="M0 20 L20 0 L86 0 L106 20 L86 40 L20 40 Z" stroke="#e8a548" stroke-width="2"/>
+          <circle cx="18" cy="20" r="4" fill="#e8a548"/>
+          <text x="63" y="25" fill="#f4d49b" font-family="Inter" font-size="12" text-anchor="middle">#tags</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>About me</h2>
+    </div>
+    <div class="about-body">
+      <div>
+        <p>
+          [Write two or three sentences here: what you're studying, what kind of
+          developer you are, and what you're looking for in an internship. Keep
+          it plain and specific — recruiters skim this in ten seconds.]
+        </p>
+        <p>
+          [A second short paragraph works well for one concrete detail — a project
+          you're proud of, a tool you reach for often, or what you want to get
+          better at next.]
+        </p>
+      </div>
+      <dl class="about-facts">
+        <div class="fact">
+          <dt>Based in</dt>
+          <dd>Tangerang, Banten, Indonesia</dd>
+        </div>
+        <div class="fact">
+          <dt>Studying</dt>
+          <dd>[Your program / university]</dd>
+        </div>
+        <div class="fact">
+          <dt>Looking for</dt>
+          <dd>Software engineering internship</dd>
+        </div>
+        <div class="fact">
+          <dt>Elsewhere</dt>
+          <dd><a href="https://github.com/NP3215" target="_blank" rel="noopener">github.com/NP3215</a></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Skills &amp; expertise</h2>
+      <p>Edit these lists to match what you actually used — pull them straight from your two projects below.</p>
+    </div>
+    <div class="skill-groups">
+      <div class="skill-group">
+        <h3>Languages</h3>
+        <ul>
+          <li>JavaScript</li>
+          <li>TypeScript</li>
+          <li>Python</li>
+          <li>C#</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Tools &amp; platforms</h3>
+        <ul>
+          <li>Chrome Extension APIs</li>
+          <li>Git &amp; GitHub</li>
+          <li>Vercel</li>
+          <li>[Add / remove]</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>What I focus on</h3>
+        <ul>
+          <li>Turning manual tasks into one-click tools</li>
+          <li>Small, usable interfaces</li>
+          <li>Connecting APIs across platforms</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Projects</h2>
+      <p>Two recent builds. Each one opens onto a page with more screenshots and detail.</p>
+    </div>
+
+    <div class="project-feature">
+      <div class="feature-media">
+        <img src="Pictures/IntaTagsMain.png" alt="InstaTags website hero, reading 'Save time on tags, spend it on content'">
+      </div>
+      <div>
+        <span class="feature-tag gold">Chrome extension</span>
+        <h3>InstaTags</h3>
+        <p>
+          Turns a photo into ready-to-use Instagram hashtags. A set of AI models
+          look at the image together and hand back a tag list you can drop
+          straight into your caption — as a Chrome extension or a web app.
+        </p>
+        <a class="feature-link" href="#/instatags">View project →</a>
+      </div>
+    </div>
+
+    <div class="project-feature reverse">
+      <div class="feature-media">
+        <img src="Pictures/WhatsAppWeChatMain.png" alt="Unified inbox showing WhatsApp and WeChat conversations side by side">
+      </div>
+      <div>
+        <span class="feature-tag blue">Cross-platform messaging</span>
+        <h3>WhatsApp WeChat Messaging Bridge</h3>
+        <p>
+          A dashboard that puts WhatsApp and WeChat conversations in one inbox,
+          labelled by source, so a team can read and reply to customers on
+          either app without switching tools.
+        </p>
+        <a class="feature-link" href="#/chatbridge">View project →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-contact">
+      <p>Open to internship opportunities.</p>
+      <p><a href="mailto:you@example.com">you@example.com</a> · Tangerang, Indonesia</p>
+    </div>
+    <div class="footer-social">
+      <a href="https://github.com/NP3215" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/nathan-phan-218a88367/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <div class="wrap footer-note">© 2026 Nathan. Built with HTML, CSS and a little JS — deployed on Vercel.</div>
+</footer>
+
+</div><!-- /#page-home -->
+
+
+<!-- ===========================================================
+     PAGE: InstaTags  (was project-instatags.html)
+     =========================================================== -->
+<div class="page" id="page-instatags" data-title="InstaTags — Nathan" hidden>
+
+<header class="project-hero">
+  <div class="wrap">
+    <a class="back-link" href="#projects">← Back to projects</a>
+    <h1>InstaTags</h1>
+    <p class="project-tagline">
+      A Chrome extension and web app that turns a photo into ready-to-use
+      Instagram hashtags, so posting takes less time and less guessing.
+    </p>
+    <dl class="project-meta">
+      <div class="meta-item">
+        <dt>role</dt>
+        <dd>[Your role, e.g. Solo developer]</dd>
+      </div>
+      <div class="meta-item">
+        <dt>type</dt>
+        <dd>Chrome extension + web app</dd>
+      </div>
+      <div class="meta-item">
+        <dt>live</dt>
+        <dd><a href="https://tagsout.vercel.app" target="_blank" rel="noopener">tagsout.vercel.app</a></dd>
+      </div>
+    </dl>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="detail-block">
+      <h2>Overview</h2>
+      <p>
+        InstaTags exists to solve one small, repetitive problem: coming up with
+        a good set of hashtags every time you post. Instead of hand-picking tags
+        or copying a generic list, InstaTags looks at the photo itself. Several
+        lightweight AI models each analyze a different signal in the image —
+        subject, style, colour, mood — and their findings are combined into one
+        set of relevant tags.
+      </p>
+      <p>
+        It's built two ways: as a Chrome extension that plugs directly into the
+        Instagram posting flow, and as a standalone web app for anyone who just
+        wants to drop in an image and copy the results.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Screenshots</h2>
+    </div>
+    <div class="shot-grid">
+      <figure class="shot">
+        <img src="assets/instatags-landing.png" alt="InstaTags landing page">
+        <figcaption>Landing page — the pitch in one line.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="assets/instatags-upload.png" alt="InstaTags upload screen">
+        <figcaption>Upload screen for the web app version.</figcaption>
+      </figure>
+      <figure class="shot wide">
+        <img src="assets/instatags-howto.png" alt="InstaTags how-to-use steps for the Chrome extension">
+        <figcaption>Step-by-step flow for the Chrome extension.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How it works, extension side</h2>
+    </div>
+    <ol class="step-list">
+      <li>Create a new post on Instagram and choose the photo or video.</li>
+      <li>Go through the usual editing steps until you reach the caption screen.</li>
+      <li>Open the InstaTags extension icon to launch the hashtag generator.</li>
+      <li>Let it analyze the image — this takes a few seconds.</li>
+      <li>Review the suggested hashtags.</li>
+      <li>Copy the tags into your caption and post.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What I built</h2>
+    </div>
+    <ul class="feature-list">
+      <li>Chrome extension that reads the photo mid-upload and generates matching hashtags inline.</li>
+      <li>Companion web app for tagging an image without installing anything.</li>
+      <li>Multiple models analysing the same image from different angles, merged into one tag list.</li>
+      <li>One-click copy so tags go straight into the caption.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Stack</h2>
+      <p>[Confirm this list against what you actually used.]</p>
+    </div>
+    <div class="stack-chips">
+      <span class="chip">JavaScript</span>
+      <span class="chip">Chrome Extension APIs</span>
+      <span class="chip">Image recognition models</span>
+      <span class="chip">Vercel</span>
+    </div>
+    <div class="project-links" style="margin-top:28px;">
+      <a class="btn btn-outline" href="https://github.com/NP3215" target="_blank" rel="noopener">View code on GitHub</a>
+      <a class="btn btn-primary" href="https://tagsout.vercel.app" target="_blank" rel="noopener">Open live site</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="next-project">
+    <div>
+      <div class="label">Next project</div>
+      <div class="title">WhatsApp WeChat Messaging Bridge</div>
+    </div>
+    <a class="btn btn-outline" href="#/chatbridge">View →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap footer-note">© 2026 Nathan. Built with HTML, CSS and a little JS — deployed on Vercel.</div>
+</footer>
+
+</div><!-- /#page-instatags -->
+
+
+<!-- ===========================================================
+     PAGE: WhatsApp WeChat Messaging Bridge  (was project-chatbridge.html)
+     TODO: rename "WhatsApp WeChat Messaging Bridge" throughout this page to the real project name
+     =========================================================== -->
+<div class="page" id="page-chatbridge" data-title="WhatsApp WeChat Messaging Bridge — Nathan" hidden>
+
+<header class="project-hero">
+  <div class="wrap">
+    <a class="back-link" href="#projects">← Back to projects</a>
+    <h1>WhatsApp WeChat Messaging Bridge</h1>
+    <p class="project-tagline">
+      A third-party dashboard that connects WhatsApp and WeChat business
+      accounts, so conversations from both apps show up in a single inbox.
+    </p>
+    <dl class="project-meta">
+      <div class="meta-item">
+        <dt>role</dt>
+        <dd>[Your role]</dd>
+      </div>
+      <div class="meta-item">
+        <dt>type</dt>
+        <dd>Cross-platform messaging dashboard</dd>
+      </div>
+      <div class="meta-item">
+        <dt>status</dt>
+        <dd>[e.g. In development]</dd>
+      </div>
+    </dl>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="detail-block">
+      <h2>Overview</h2>
+      <p>
+        Businesses that talk to customers on both WhatsApp and WeChat usually
+        end up juggling two separate apps, two separate logins, and two
+        separate habits. This platform merges both into one inbox: every
+        conversation is tagged by where it came from — <strong>[WA]</strong> or
+        <strong>[WC]</strong> — but read, sent, and searched from the same
+        screen, across multiple connected company accounts.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Screenshots</h2>
+    </div>
+    <div class="shot-grid">
+      <figure class="shot wide">
+        <img src="assets/chatbridge-whatsapp.png" alt="Unified inbox with WhatsApp and WeChat chats listed together, labelled WA and WC">
+        <figcaption>Unified chat list — WhatsApp and WeChat conversations side by side, labelled by source.</figcaption>
+      </figure>
+      <figure class="shot wide">
+        <img src="assets/chatbridge-wechat.png" alt="Company-level view listing multiple connected WeChat business accounts">
+        <figcaption>Company-level view for managing several connected accounts at once.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What I built</h2>
+    </div>
+    <ul class="feature-list">
+      <li>Unified inbox that merges WhatsApp and WeChat conversations, clearly labelled by source.</li>
+      <li>Company-level view for switching between multiple connected business accounts.</li>
+      <li>Message sync so replies sent from the dashboard land back in the original app.</li>
+      <li>Built for support teams who'd otherwise need two separate tools open at once.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Stack</h2>
+      <p>[Confirm and trim this list to what you actually used on this project.]</p>
+    </div>
+    <div class="stack-chips">
+      <span class="chip">TypeScript</span>
+      <span class="chip">Go</span>
+      <span class="chip">Python</span>
+      <span class="chip">Svelte</span>
+      <span class="chip">Tailwind CSS</span>
+      <span class="chip">Redis</span>
+      <span class="chip">Kubernetes</span>
+      <span class="chip">Azure</span>
+      <span class="chip">Git</span>
+    </div>
+    <div class="project-links" style="margin-top:28px;">
+      <a class="btn btn-outline" href="https://github.com/NP3215" target="_blank" rel="noopener">View code on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="next-project">
+    <div>
+      <div class="label">Next project</div>
+      <div class="title">InstaTags</div>
+    </div>
+    <a class="btn btn-outline" href="#/instatags">View →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap footer-note">© 2026 Nathan. Built with HTML, CSS and a little JS — deployed on Vercel.</div>
+</footer>
+
+</div><!-- /#page-chatbridge -->
+
+
+<script>
+/* ===========================================================
+   Mobile nav toggle (was js/main.js)
+   =========================================================== */
+(function () {
+  var toggle = document.querySelector(".nav-toggle");
+  var links = document.querySelector(".nav-links");
+  if (toggle && links) {
+    toggle.addEventListener("click", function () {
+      var open = links.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+    links.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        links.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+})();
+
+/* ===========================================================
+   Hash router
+   "#/instatags" and "#/chatbridge" swap the visible page.
+   Anything else ("#about", "#projects", "") is the home page,
+   optionally scrolled to that section.
+   =========================================================== */
+(function () {
+  var ROUTES = {
+    "#/": "page-home",
+    "#home": "page-home",
+    "#/instatags": "page-instatags",
+    "#/chatbridge": "page-chatbridge"
+  };
+  var pages = Array.prototype.slice.call(document.querySelectorAll(".page"));
+
+  function render(smooth) {
+    var hash = location.hash;
+    var pageId = ROUTES[hash];
+    var anchor = null;
+
+    if (!pageId) {
+      pageId = "page-home";
+      if (hash.length > 1 && hash.charAt(1) !== "/") {
+        anchor = hash.slice(1);
+      }
+    }
+
+    pages.forEach(function (page) {
+      page.hidden = page.id !== pageId;
+    });
+
+    var current = document.getElementById(pageId);
+    if (current && current.dataset.title) {
+      document.title = current.dataset.title;
+    }
+
+    var target = anchor ? document.getElementById(anchor) : null;
+    if (target) {
+      target.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }
+
+  window.addEventListener("hashchange", function () { render(true); });
+  render(false);
+})();
+</script>
+
+</body>
+</html>
